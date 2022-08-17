@@ -48,8 +48,12 @@ export default class FileTransport extends GenericTransport {
 	}
 
 	writeLine(message: LogMessage) {
-		fs.appendFile(this.options.path, JSON.stringify(message) + "\n", (error) => {
-			if (error) throw error;
-		});
+		fs.appendFile(
+			this.options.path,
+			JSON.stringify(message) + "\n",
+			(error) => {
+				if (error) throw error;
+			}
+		);
 	}
 }

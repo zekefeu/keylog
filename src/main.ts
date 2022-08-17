@@ -86,9 +86,8 @@ import FileTransport from "./transports/FileTransport.js";
 export const transports = {
 	GenericTransport: GenericTransport,
 	ConsoleTransport: ConsoleTransport,
-	FileTransport: FileTransport
+	FileTransport: FileTransport,
 };
-
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 /*
@@ -105,7 +104,12 @@ const logger = new Logger({
 	name: "keylog",
 	transports: [
 		new ConsoleTransport({ level: "info", format: "pretty", async: true }),
-		new FileTransport({ level: "info", path: "log.log", async: true, attachDiagnosticReport: true })
+		new FileTransport({
+			level: "info",
+			path: "log.log",
+			async: true,
+			attachDiagnosticReport: true,
+		}),
 	],
 });
 
