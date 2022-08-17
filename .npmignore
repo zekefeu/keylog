@@ -1,0 +1,10 @@
+.husky
+.vscode
+test
+.eslint*
+.prettier*
+*.log
+tsconfig.json
+*.tgz
+src/**/*.ts
+!src/**/*.d.ts

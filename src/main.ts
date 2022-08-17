@@ -40,6 +40,16 @@ export class Logger {
 	}
 
 	info(message: string, obj?: object) {
+		this.distributeLogMessage(message, obj);
+	}
+
+	/**
+	 * Loops through each stream and transport
+	 * and send them the message
+	 * @param message
+	 */
+	private distributeLogMessage(message: string, obj?: object) {
+		// Build the message object
 		const logMessage = buildLogMessage({
 			name: this.loggerOptions.name,
 			level: "info",
@@ -47,21 +57,12 @@ export class Logger {
 			obj,
 		});
 
-		this.distributeLogMessage(logMessage);
-	}
-
-	/**
-	 * Loop through each stream and transport
-	 * and send them the message
-	 * @param message
-	 */
-	private distributeLogMessage(message: LogMessage) {
 		// Streams
 
 		// Transports
 		if (this.loggerOptions.transports) {
 			this.loggerOptions.transports.forEach((transport) => {
-				transport.log(message);
+				transport.log(logMessage);
 			});
 		}
 	}
@@ -88,5 +89,25 @@ import GenericTransport from "./transports/GenericTransport.js";
 
 export const transports = {
 	ConsoleTransport: ConsoleTransport,
-	GenericTransport: GenericTransport
+	GenericTransport: GenericTransport,
 };
+
+import colors from "./utils/colors.js";
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function formatFn(message: LogMessage): string {
+	return `${colors.green}This is a ${colors.yellow}custom${
+		colors.green
+	} format for ConsoleTransport!${colors.blue} ${JSON.stringify(message)}${
+		colors.reset
+	}`;
+}
+
+const logger = new Logger({
+	name: "keylog",
+	transports: [
+		new ConsoleTransport({ level: "info", format: "pretty", async: true }),
+	],
+});
+
+logger.info("Hi from keylog !");

@@ -5,6 +5,15 @@
  */
 
 export default {
+	// Reset
+	reset: "\x1b[0m",
+
+	// Formatting
+	bold: "\x1b[1m",
+	italic: "\x1b[3m",
+	underline: "\x1b[4m",
+	strikethrough: "\x1b[1m",
+
 	// Colors
 	gray: "\x1b[90m",
 	red: "\x1b[91m",
@@ -14,13 +23,4 @@ export default {
 	magenta: "\x1b[95m",
 	cyan: "\x1b[96m",
 	white: "\x1b[97m",
-
-	// Formatting
-	bold: "\x1b[1m",
-	italic: "\x1b[3m",
-	underline: "\x1b[4m",
-	strikethrough: "\x1b[1m",
-
-	// Reset
-	reset: "\x1b[0m",
 };
