@@ -3,13 +3,9 @@
  * Implements and exports the Logger class
  */
 
-import os from "node:os";
+import { LoggerOptions, Level } from "./types/global";
 
-import {
-	BuildLogMessageOptions,
-	LoggerOptions,
-	LogMessage,
-} from "./types/global";
+import { buildLogMessage } from "./utils/utils.js";
 
 export class Logger {
 	// Default config
@@ -24,7 +20,7 @@ export class Logger {
 	};
 
 	/**
-	 *
+	 * Initializes the logger
 	 * @param options
 	 */
 	constructor(options?: LoggerOptions) {
@@ -35,12 +31,26 @@ export class Logger {
 			// Merge objects
 			// this.loggerOptions = Object.assign(this.loggerOptions, options);
 		}
+	}
 
-		// console.log(this.loggerOptions);
+	debug(message: string, obj?: object) {
+		this.distributeLogMessage("debug", message, obj);
 	}
 
 	info(message: string, obj?: object) {
-		this.distributeLogMessage(message, obj);
+		this.distributeLogMessage("info", message, obj);
+	}
+
+	warn(message: string, obj?: object) {
+		this.distributeLogMessage("warn", message, obj);
+	}
+
+	error(message: string, obj?: object) {
+		this.distributeLogMessage("error", message, obj);
+	}
+
+	fatal(message: string, obj?: object) {
+		this.distributeLogMessage("fatal", message, obj);
 	}
 
 	/**
@@ -48,11 +58,11 @@ export class Logger {
 	 * and send them the message
 	 * @param message
 	 */
-	private distributeLogMessage(message: string, obj?: object) {
+	distributeLogMessage(level: Level, message: string, obj?: object) {
 		// Build the message object
 		const logMessage = buildLogMessage({
 			name: this.loggerOptions.name,
-			level: "info",
+			level: level,
 			message,
 			obj,
 		});
@@ -68,45 +78,34 @@ export class Logger {
 	}
 }
 
-export function buildLogMessage(options: BuildLogMessageOptions): LogMessage {
-	return {
-		_meta: {
-			pid: process.pid,
-			hostname: os.hostname(),
-			v: 1,
-		},
-		name: options.name,
-		level: options.level,
-		time: Date.now(),
-		msg: options.message,
-		...options.obj,
-	};
-}
-
 // Exports
-import ConsoleTransport from "./transports/ConsoleTransport.js";
 import GenericTransport from "./transports/GenericTransport.js";
+import ConsoleTransport from "./transports/ConsoleTransport.js";
+import FileTransport from "./transports/FileTransport.js";
 
 export const transports = {
-	ConsoleTransport: ConsoleTransport,
 	GenericTransport: GenericTransport,
+	ConsoleTransport: ConsoleTransport,
+	FileTransport: FileTransport
 };
 
-import colors from "./utils/colors.js";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+/*
+import colors from "./utils/colors.js";
 function formatFn(message: LogMessage): string {
 	return `${colors.green}This is a ${colors.yellow}custom${
 		colors.green
 	} format for ConsoleTransport!${colors.blue} ${JSON.stringify(message)}${
 		colors.reset
 	}`;
-}
+}*/
 
 const logger = new Logger({
 	name: "keylog",
 	transports: [
 		new ConsoleTransport({ level: "info", format: "pretty", async: true }),
+		new FileTransport({ level: "info", path: "log.log", async: true, attachDiagnosticReport: true })
 	],
 });
 

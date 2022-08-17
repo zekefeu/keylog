@@ -2,14 +2,14 @@
   "name": "@fuka-g/keylog",
   "version": "0.0.1",
   "description": "A Node.js logging library",
-  "main": "dist/main.js",
-  "types": "dist/main.d.ts",
+  "main": "src/main.js",
+  "types": "src/types/global.d.ts",
   "type": "module",
   "scripts": {
     "test": "vitest",
     "test-ui": "vitest --ui",
-    "prepublishOnly": "tsc --watch false",
-    "publish": "tsc --watch false && npm publish --access public",
+    "prepublishOnly": "yarn && tsc --watch false",
+    "publish": "npm publish --access public",
     "lint": "npx eslint src/**/*.ts",
     "prettier": "npx prettier -w .",
     "prepare": "husky install"

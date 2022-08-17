@@ -33,7 +33,6 @@ export default class ConsoleTransport extends GenericTransport {
 	 * @param message
 	 */
 	log(message: LogMessage) {
-		console.log(this.options.async);
 		// Ignore if the message is below the transport's minimum level
 		if (levels[this.options.level] > levels[message.level]) return;
 

@@ -5,7 +5,7 @@
 
 import * as stream from "node:stream";
 
-export type Level = "trace" | "debug" | "info" | "warn" | "error" | "fatal";
+export type Level = "debug" | "info" | "warn" | "error" | "fatal";
 
 // Types for the Logger class
 export interface LoggerOptions {
@@ -37,6 +37,13 @@ export interface ConsoleTransportOption extends TransportOption {
 	async: boolean;
 }
 
+export interface FileTransportOption extends TransportOption {
+	level: Level;
+	path: string;
+	async: boolean;
+	attachDiagnosticReport: boolean;
+}
+
 export interface LogMessage {
 	_meta: {
 		pid: number;
@@ -66,4 +73,18 @@ export interface BuildLogMessageOptions {
 	level: Level;
 	message: string;
 	obj?: object;
+}
+
+export class Logger {
+	loggerOptions: LoggerOptions;
+
+	constructor(options?: LoggerOptions);
+
+	debug(message: string, obj?: object): void;
+	info(message: string, obj?: object): void;
+	warn(message: string, obj?: object): void;
+	error(message: string, obj?: object): void;
+	fatal(message: string, obj?: object): void;
+
+	distributeLogMessage(message: string, obj?: object): void;
 }
