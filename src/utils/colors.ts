@@ -1,7 +1,9 @@
 /**
+ * utils/colors.ts
  * Exports ANSI excape codes for formatting terminal output.
  * I use this instead of colors because it's faster and just as easy to use.
  */
+
 export default {
 	// Colors
 	gray: "\x1b[90m",
@@ -20,5 +22,5 @@ export default {
 	strikethrough: "\x1b[1m",
 
 	// Reset
-	reset: "\x1b[0m"
-}
+	reset: "\x1b[0m",
+};
