@@ -77,3 +77,14 @@ export class Logger {
 		}
 	}
 }
+
+// Exports
+import GenericTransport from "./transports/GenericTransport.js";
+import ConsoleTransport from "./transports/ConsoleTransport.js";
+import FileTransport from "./transports/FileTransport.js";
+
+export const transports = {
+	GenericTransport: GenericTransport,
+	ConsoleTransport: ConsoleTransport,
+	FileTransport: FileTransport,
+};

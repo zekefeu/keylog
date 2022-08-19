@@ -1,6 +1,6 @@
 {
   "name": "@fuka-g/keylog",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A Node.js logging library",
   "main": "src/main.js",
   "types": "src/types/global.d.ts",
@@ -9,7 +9,6 @@
     "test": "vitest",
     "test-ui": "vitest --ui",
     "prepublishOnly": "yarn && tsc --watch false",
-    "publish": "npm publish --access public",
     "lint": "npx eslint src/**/*.ts",
     "prettier": "npx prettier -w .",
     "prepare": "husky install"
