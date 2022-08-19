@@ -1,6 +1,6 @@
 {
   "name": "@fuka-g/keylog",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A Node.js logging library",
   "main": "src/main.js",
   "types": "src/types/global.d.ts",

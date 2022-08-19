@@ -4,6 +4,7 @@
  */
 
 import * as stream from "node:stream";
+import GenericTransport from "../transports/GenericTransport";
 
 export type Level = "debug" | "info" | "warn" | "error" | "fatal";
 
@@ -88,3 +89,23 @@ export class Logger {
 
 	distributeLogMessage(message: string, obj?: object): void;
 }
+
+export class ConsoleTransport extends GenericTransport {
+	constructor(options: TransportOption);
+	log(message: LogMessage): void;
+	buildPrettyMessage(message: LogMessage): string;
+}
+
+export class FileTransport extends GenericTransport {
+	constructor(options: TransportOption);
+	log(message: LogMessage): void;
+	writeLine(message: LogMessage): void;
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+export const transports = {
+	GenericTransport,
+	ConsoleTransport,
+	FileTransport,
+};
