@@ -1,6 +1,6 @@
 /**
- * transports/ConsoleTransports.ts
- * Exports a transport that logs messages to the standard output
+ * transports/FileTransport.ts
+ * Exports a transport that logs messages to a file in a JSON format
  */
 
 import fs from "node:fs";

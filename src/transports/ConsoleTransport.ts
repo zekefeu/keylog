@@ -1,5 +1,5 @@
 /**
- * transports/ConsoleTransports.ts
+ * transports/ConsoleTransport.ts
  * Exports a transport that logs messages to the standard output
  */
 
@@ -45,7 +45,7 @@ export default class ConsoleTransport extends GenericTransport {
 			// Convert the object into a loggable string
 			line = JSON.stringify(message);
 		} else {
-			// Use the
+			// Use the built-in formatting function
 			line = this.buildPrettyMessage(message);
 		}
 
