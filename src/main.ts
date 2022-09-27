@@ -3,9 +3,9 @@
  * Implements and exports the Logger class
  */
 
-import { LoggerOptions, Level } from "./types/global";
+import { Level, LoggerOptions, Transport } from "global";
 
-import { buildLogMessage } from "./utils/utils.js";
+const { buildLogMessage } = require("./utils/utils.js");
 
 export class Logger {
 	// Default config
@@ -56,7 +56,9 @@ export class Logger {
 	/**
 	 * Loops through each stream and transport
 	 * and send them the message
+	 * @param level
 	 * @param message
+	 * @param obj
 	 */
 	distributeLogMessage(level: Level, message: string, obj?: object) {
 		// Build the message object
@@ -71,7 +73,7 @@ export class Logger {
 
 		// Transports
 		if (this.loggerOptions.transports) {
-			this.loggerOptions.transports.forEach((transport) => {
+			this.loggerOptions.transports.forEach((transport: Transport) => {
 				transport.log(logMessage);
 			});
 		}
@@ -79,11 +81,11 @@ export class Logger {
 }
 
 // Exports
-import GenericTransport from "./transports/GenericTransport.js";
-import ConsoleTransport from "./transports/ConsoleTransport.js";
-import FileTransport from "./transports/FileTransport.js";
+const GenericTransport = require("./transports/GenericTransport.js");
+const ConsoleTransport = require("./transports/ConsoleTransport.js");
+const FileTransport = require("./transports/FileTransport.js");
 
-export const transports = {
+module.exports.transports = {
 	GenericTransport: GenericTransport,
 	ConsoleTransport: ConsoleTransport,
 	FileTransport: FileTransport,

@@ -1,111 +1,122 @@
 /**
  * types/global.d.ts
- * Types definitons for the project
+ * Types definitions for the project
  */
 
-import * as stream from "node:stream";
-import GenericTransport from "../transports/GenericTransport";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-function */
 
-export type Level = "debug" | "info" | "warn" | "error" | "fatal";
+declare module "global" {
+	import stream from "node:stream";
+	//import GenericTransport from "../transports/GenericTransport.js";
 
-// Types for the Logger class
-export interface LoggerOptions {
-	name: string;
+	type Level = "debug" | "info" | "warn" | "error" | "fatal";
 
-	// Can be used to mix properties in the message objects
-	mixin?: object;
-	mixinFn?: () => object;
+	// Types for the Logger class
+	interface LoggerOptions {
+		name: string;
 
-	// Stream & transport options
-	streams?: StreamOption[];
-	transports?: Transport[];
-}
+		// Can be used to mix properties in the message objects
+		mixin?: object;
+		mixinFn?: () => object;
 
-export interface StreamOption {
-	level: Level;
-	stream: stream.Writable;
-}
+		// Stream & transport options
+		streams?: StreamOption[];
+		transports?: Transport[];
+	}
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface TransportOption {}
+	interface StreamOption {
+		level: Level;
+		stream: stream.Writable;
+	}
 
-export type ConsoleTransportFormat = "json" | "pretty" | "custom";
+	// eslint-disable-next-line @typescript-eslint/no-empty-interface
+	interface TransportOption {}
 
-export interface ConsoleTransportOption extends TransportOption {
-	level: Level;
-	format: ConsoleTransportFormat;
-	customFormatFn?: (message: LogMessage) => string;
-	async: boolean;
-}
+	type ConsoleTransportFormat = "json" | "pretty" | "custom";
 
-export interface FileTransportOption extends TransportOption {
-	level: Level;
-	path: string;
-	async: boolean;
-	attachDiagnosticReport: boolean;
-}
+	interface ConsoleTransportOption extends TransportOption {
+		level: Level;
+		format: ConsoleTransportFormat;
+		customFormatFn?: (message: LogMessage) => string;
+		async: boolean;
+	}
 
-export interface LogMessage {
-	_meta: {
-		pid: number;
-		hostname: string;
-		diagnosticReport?: object;
-		v: number;
-		src?: {
-			file: string;
-			line: number;
-			func: string;
+	interface FileTransportOption extends TransportOption {
+		level: Level;
+		path: string;
+		async: boolean;
+		attachDiagnosticReport: boolean;
+	}
+
+	interface LogMessage {
+		_meta: {
+			pid: number;
+			hostname: string;
+			diagnosticReport?: object;
+			v: number;
+			src?: {
+				file: string;
+				line: number;
+				func: string;
+			};
 		};
+		name: string;
+		level: Level;
+		time: number;
+		msg: string;
+	}
+
+	class Transport {
+		constructor(options: TransportOption);
+
+		log(message: LogMessage): void;
+	}
+
+	interface BuildLogMessageOptions {
+		name: string;
+		level: Level;
+		message: string;
+		obj?: object;
+	}
+
+	class Logger {
+		loggerOptions: LoggerOptions;
+
+		constructor(options?: LoggerOptions);
+
+		debug(message: string, obj?: object): void;
+		info(message: string, obj?: object): void;
+		warn(message: string, obj?: object): void;
+		error(message: string, obj?: object): void;
+		fatal(message: string, obj?: object): void;
+
+		distributeLogMessage(message: string, obj?: object): void;
+	}
+
+	class GenericTransport {
+		constructor(options: TransportOption);
+		log(message: LogMessage): void;
+		buildPrettyMessage(message: LogMessage): string;
+	}
+
+	class ConsoleTransport extends GenericTransport {
+		constructor(options: TransportOption);
+		log(message: LogMessage): void;
+		buildPrettyMessage(message: LogMessage): string;
+	}
+
+	class FileTransport extends GenericTransport {
+		constructor(options: TransportOption);
+		log(message: LogMessage): void;
+		writeLine(message: LogMessage): void;
+	}
+
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	const transports = {
+		GenericTransport,
+		ConsoleTransport,
+		FileTransport,
 	};
-	name: string;
-	level: Level;
-	time: number;
-	msg: string;
 }
-
-export class Transport {
-	constructor(options: TransportOption);
-
-	log(message: LogMessage): void;
-}
-
-export interface BuildLogMessageOptions {
-	name: string;
-	level: Level;
-	message: string;
-	obj?: object;
-}
-
-export class Logger {
-	loggerOptions: LoggerOptions;
-
-	constructor(options?: LoggerOptions);
-
-	debug(message: string, obj?: object): void;
-	info(message: string, obj?: object): void;
-	warn(message: string, obj?: object): void;
-	error(message: string, obj?: object): void;
-	fatal(message: string, obj?: object): void;
-
-	distributeLogMessage(message: string, obj?: object): void;
-}
-
-export class ConsoleTransport extends GenericTransport {
-	constructor(options: TransportOption);
-	log(message: LogMessage): void;
-	buildPrettyMessage(message: LogMessage): string;
-}
-
-export class FileTransport extends GenericTransport {
-	constructor(options: TransportOption);
-	log(message: LogMessage): void;
-	writeLine(message: LogMessage): void;
-}
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export const transports = {
-	GenericTransport,
-	ConsoleTransport,
-	FileTransport,
-};

@@ -1,10 +1,9 @@
 {
   "name": "@fuka-g/keylog",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A Node.js logging library",
   "main": "src/main.js",
   "types": "src/types/global.d.ts",
-  "type": "module",
   "scripts": {
     "test": "vitest",
     "test-ui": "vitest --ui",

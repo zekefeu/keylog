@@ -3,7 +3,7 @@
  * Numerical values for the levels
  */
 
-export default {
+module.exports = {
 	trace: 0,
 	debug: 1,
 	info: 2,

@@ -4,7 +4,7 @@
  * I use this instead of colors because it's faster and just as easy to use.
  */
 
-export default {
+module.exports = {
 	// Reset
 	reset: "\x1b[0m",
 

@@ -2,15 +2,14 @@
  * transports/ConsoleTransport.ts
  * Exports a transport that logs messages to the standard output
  */
+import { ConsoleTransportOption, LogMessage } from "global";
 
-import { ConsoleTransportOption, LogMessage } from "../types/global";
+const colors = require("../utils/colors.js");
+const levels = require("../utils/levels.js");
+const { getLevelTheme } = require("../utils/utils.js");
+const GenericTransport = require("./GenericTransport.js");
 
-import colors from "../utils/colors.js";
-import levels from "../utils/levels.js";
-import { getLevelTheme } from "../utils/utils.js";
-import GenericTransport from "./GenericTransport.js";
-
-export default class ConsoleTransport extends GenericTransport {
+class ConsoleTransport extends GenericTransport {
 	// The transport's minimum level
 	readonly options: ConsoleTransportOption;
 
@@ -36,7 +35,7 @@ export default class ConsoleTransport extends GenericTransport {
 		// Ignore if the message is below the transport's minimum level
 		if (levels[this.options.level] > levels[message.level]) return;
 
-		let line = "";
+		let line: string;
 
 		if (this.options.format === "custom" && this.options.customFormatFn) {
 			// Custom format, use the provided function
@@ -71,3 +70,5 @@ export default class ConsoleTransport extends GenericTransport {
 		}] ${levelColor}${message.level}${colors.reset}: ${message.msg}`;
 	}
 }
+
+module.exports = ConsoleTransport;

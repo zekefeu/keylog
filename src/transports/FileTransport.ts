@@ -2,16 +2,15 @@
  * transports/FileTransport.ts
  * Exports a transport that logs messages to a file in a JSON format
  */
+import { FileTransportOption, LogMessage } from "global";
 
-import fs from "node:fs";
-import process from "node:process";
+const fs = require("node:fs");
+const process = require("node:process");
 
-import { FileTransportOption, LogMessage } from "../types/global";
+const levels = require("../utils/levels.js");
+const GenericTransport = require("./GenericTransport.js");
 
-import levels from "../utils/levels.js";
-import GenericTransport from "./GenericTransport.js";
-
-export default class FileTransport extends GenericTransport {
+class FileTransport extends GenericTransport {
 	// The transport's minimum level
 	readonly options: FileTransportOption;
 
@@ -51,9 +50,11 @@ export default class FileTransport extends GenericTransport {
 		fs.appendFile(
 			this.options.path,
 			JSON.stringify(message) + "\n",
-			(error) => {
+			(error: Error) => {
 				if (error) throw error;
 			}
 		);
 	}
 }
+
+module.exports = FileTransport;

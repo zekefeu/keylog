@@ -5,9 +5,9 @@
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { TransportOption, LogMessage, Transport } from "../types/global";
+import { LogMessage, Transport, TransportOption } from "global";
 
-export default class GenericTransport implements Transport {
+class GenericTransport implements Transport {
 	/**
 	 * Called when the transport is initialized
 	 * @param options
@@ -20,3 +20,5 @@ export default class GenericTransport implements Transport {
 	 */
 	log(message: LogMessage) {}
 }
+
+module.exports = GenericTransport;

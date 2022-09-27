@@ -1,5 +1,4 @@
 .husky
-.vscode
 docs
 test
 src/**/*.ts
