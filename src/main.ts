@@ -3,20 +3,33 @@
  * Implements and exports the Logger class
  */
 
-import { Level, LoggerOptions, Transport } from "global";
+import {
+	Level,
+	LoggerOptions,
+	LogMessage,
+	StreamOption,
+	Transport,
+} from "global";
 
+const levels = require("./utils/levels.js");
 const { buildLogMessage } = require("./utils/utils.js");
 
 export class Logger {
 	// Default config
 	loggerOptions: LoggerOptions = {
 		name: "app",
+		transports: [
+			new ConsoleTransport({
+				level: "info",
+				format: "pretty",
+			}),
+		] /*
 		streams: [
 			{
 				level: "info",
 				stream: process.stdout,
 			},
-		],
+		],*/,
 	};
 
 	/**
@@ -62,7 +75,7 @@ export class Logger {
 	 */
 	distributeLogMessage(level: Level, message: string, obj?: object) {
 		// Build the message object
-		const logMessage = buildLogMessage({
+		const logMessage: LogMessage = buildLogMessage({
 			name: this.loggerOptions.name,
 			level: level,
 			message,
@@ -70,10 +83,18 @@ export class Logger {
 		});
 
 		// Streams
+		if (this.loggerOptions.streams) {
+			this.loggerOptions.streams.forEach((stream: StreamOption) => {
+				if (levels[stream.level] > levels[logMessage.level]) return;
+
+				stream.stream.write(JSON.stringify(logMessage) + "\n\r");
+			});
+		}
 
 		// Transports
 		if (this.loggerOptions.transports) {
 			this.loggerOptions.transports.forEach((transport: Transport) => {
+				// TODOLater: filter log levels here instead of in the transport class
 				transport.log(logMessage);
 			});
 		}
