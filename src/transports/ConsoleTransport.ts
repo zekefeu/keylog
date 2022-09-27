@@ -65,9 +65,32 @@ class ConsoleTransport extends GenericTransport {
 		const levelColor = getLevelTheme(message.level);
 
 		// Build the line that will be logged
-		return `[${date.toISOString()}] [${message.name}@${
+		let line = `[${date.toISOString()}] [${message.name}@${
 			message._meta.hostname
 		}] ${levelColor}${message.level}${colors.reset}: ${message.msg}`;
+
+		if (message.obj) {
+			if (message.obj instanceof Error) {
+				const error: Error = message.obj;
+
+				// Add to the final string details about the error we threw
+				// Like the message, the name if we set a custom name
+				// The stack and a cause error, if specified
+				line += `\n\r    ${colors.red}Error: ${colors.reset}${error.message}`;
+				if (error.name && error.name !== "Error")
+					line += `\n\r\t${colors.gray}Name: ${colors.reset}${error.name}`;
+				line += `\n\r    Stack: ${colors.gray}${error.stack}${colors.reset}`;
+				if (error.cause)
+					line += `\n\r    ${colors.gray}Cause: ${colors.reset}${error.cause}`;
+				line += "\n\r";
+			} else {
+				// Stringify the object and append it
+				line += "\n\r";
+				line += JSON.stringify(message.obj, null, "  ");
+			}
+		}
+
+		return line;
 	}
 }
 

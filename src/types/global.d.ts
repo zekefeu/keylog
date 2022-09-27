@@ -65,6 +65,7 @@ declare module "global" {
 		level: Level;
 		time: number;
 		msg: string;
+		obj: object | null;
 	}
 
 	class Transport {
@@ -77,7 +78,7 @@ declare module "global" {
 		name: string;
 		level: Level;
 		message: string;
-		obj?: object;
+		obj: object | null;
 	}
 
 	class Logger {

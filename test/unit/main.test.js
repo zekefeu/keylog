@@ -42,7 +42,7 @@ describe("Testing the Logger class", () => {
 			const logger = new keylog.Logger({
 				name: "keylog",
 				transports: [
-					new keylog.ConsoleTransport({
+					new keylog.transports.ConsoleTransport({
 						level: "info",
 						format: "pretty",
 						async: false,

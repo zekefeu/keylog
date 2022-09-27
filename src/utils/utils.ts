@@ -45,7 +45,7 @@ function buildLogMessage(options: BuildLogMessageOptions): LogMessage {
 		level: options.level,
 		time: Date.now(),
 		msg: options.message,
-		...options.obj,
+		obj: options.obj ?? null,
 	};
 }
 
